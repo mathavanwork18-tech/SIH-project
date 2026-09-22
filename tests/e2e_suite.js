@@ -86,10 +86,6 @@ async function runTestSuite() {
   assert(pubRes.intent === 'PUBLISH_PRODUCT', 'Understands "Publish pannidu" as PUBLISH_PRODUCT');
   assert(pubRes.requires_confirmation === true, 'Destructive publish requires human confirmation');
 
-  // Test 9: Missing Karthi Poster Easter Egg
-  const karthiRes = MainAIOrchestrator.processInput({ transcript: 'Karthi missing poster podu', language: 'ta' });
-  assert(karthiRes.intent === 'SHOW_MISSING_POSTER', 'Triggers SHOW_MISSING_POSTER intent');
-  assert(karthiRes.action === ACTION_TYPES.SHOW_MISSING_POSTER, 'Maps to SHOW_MISSING_POSTER action');
 
   // Test 10: Smart Catalogue Multi-field Generation
   const cat = SmartCatalogueAI.generate({ category: 'Pottery' });

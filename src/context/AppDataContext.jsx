@@ -8,8 +8,6 @@ export const AppDataProvider = ({ children }) => {
   const [currentRole, setCurrentRole] = useState('artisan'); // 'artisan' | 'buyer' | 'admin'
   const [currentPage, setCurrentPage] = useState('dashboard'); // 'dashboard', 'registration', 'camera', 'imageAi', 'catalogAi', 'catalogue', 'matches', 'enquiries', 'profile', 'buyerExplore', 'buyerRequests', 'admin'
 
-  // Missing Karthi Poster Modal State
-  const [isMissingPosterOpen, setIsMissingPosterOpen] = useState(false);
 
   // Artisan profile state (Tailored for Thiru)
   const [artisanProfile, setArtisanProfile] = useState(() => {
@@ -232,9 +230,7 @@ export const AppDataProvider = ({ children }) => {
         isOffline,
         setIsOffline,
         offlineDraftCount,
-        setOfflineDraftCount,
-        isMissingPosterOpen,
-        setIsMissingPosterOpen
+        setOfflineDraftCount
       }}
     >
       {children}

@@ -131,11 +131,6 @@ export class ActionExecutor {
         }
         break;
 
-      case ACTION_TYPES.SHOW_MISSING_POSTER:
-        if (contextHandlers.openMissingPoster) {
-          contextHandlers.openMissingPoster();
-        }
-        break;
 
       case ACTION_TYPES.ANSWER_FAQ:
         // Speech announced; if follow-up action present, offer choice

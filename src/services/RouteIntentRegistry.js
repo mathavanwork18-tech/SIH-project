@@ -303,23 +303,6 @@ export const ROUTE_INTENT_REGISTRY = [
     target_screen: 'admin',
     response_ta: 'நிர்வாக பகுப்பாய்வு பக்கத்திற்கு செல்கிறேன்.',
     response_en: 'Opening admin governance and analytics dashboard.'
-  },
-  {
-    intent: 'SHOW_MISSING_POSTER',
-    route: '/easter-egg/missing-karthi',
-    screen_name: 'missing_poster',
-    description: 'Hackathon Missing Karthi Poster Modal',
-    allowed_roles: ['artisan', 'buyer', 'admin'],
-    keywords: ['karthi', 'missing', 'poster', 'கார்த்தி', 'காணவில்லை', 'போஸ்டர்'],
-    synonyms: [
-      'karthi missing poster podu',
-      'karthi enga',
-      'missing poster kaatu',
-      'karthi poster'
-    ],
-    action: 'SHOW_MISSING_POSTER',
-    response_ta: 'இதோ, ஹேக்கத்தானில் காணாமல் போன கார்த்தியைத் தேடும் போஸ்டர்!',
-    response_en: 'Displaying the Hackathon Missing Poster for Karthi!'
   }
 ];
 

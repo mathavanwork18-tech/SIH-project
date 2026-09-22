@@ -9,7 +9,6 @@ import { Navbar } from './components/common/Navbar';
 import { MobileVoiceSheet } from './components/mobile/MobileVoiceSheet';
 import { MobileBottomNav } from './components/mobile/MobileBottomNav';
 import { LanguageModal } from './components/common/LanguageModal';
-import { MissingKarthiPosterModal } from './components/common/MissingKarthiPosterModal';
 import { HackathonDemoRunner } from './components/common/HackathonDemoRunner';
 
 import { ArtisanDashboard } from './components/artisan/ArtisanDashboard';
@@ -24,7 +23,7 @@ import { BuyerRequirementPost } from './components/buyer/BuyerRequirementPost';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 
 const AppContent = () => {
-  const { currentRole, currentPage, setCurrentPage, workingDraft, setWorkingDraft, setIsMissingPosterOpen } = useAppData();
+  const { currentRole, currentPage, setCurrentPage, workingDraft, setWorkingDraft } = useAppData();
   const { t, currentLang, changeLanguage } = useLanguage();
   const { speak } = useVoice();
 
@@ -36,7 +35,6 @@ const AppContent = () => {
       triggerCamera: () => setCurrentPage('create_product'),
       triggerGallery: () => setCurrentPage('create_product'),
       changeLanguage: (lang) => changeLanguage(lang),
-      openMissingPoster: () => setIsMissingPosterOpen(true),
       speak: (msg) => speak(msg)
     });
   };
@@ -85,9 +83,6 @@ const AppContent = () => {
 
       {/* Language Selector Modal */}
       <LanguageModal />
-
-      {/* Missing Karthi Poster Modal */}
-      <MissingKarthiPosterModal />
     </MobileDeviceContainer>
   );
 };

@@ -51,7 +51,6 @@ export const ACTION_TYPES = {
   CHANGE_LANGUAGE: 'CHANGE_LANGUAGE',
   SHOW_HELP: 'SHOW_HELP',
   ANSWER_FAQ: 'ANSWER_FAQ',
-  SHOW_MISSING_POSTER: 'SHOW_MISSING_POSTER',
   GO_BACK: 'GO_BACK',
   CANCEL: 'CANCEL',
   CONFIRM: 'CONFIRM'
@@ -119,28 +118,6 @@ export class MainAIOrchestrator {
       };
     }
 
-    // ============================================================
-    // STEP 2: EASTER EGG / SPECIAL INTENTS
-    // ============================================================
-    if (
-      cleanInput.includes('karthi') ||
-      cleanInput.includes('கார்த்தி') ||
-      cleanInput.includes('missing poster') ||
-      cleanInput.includes('காணவில்லை')
-    ) {
-      return {
-        intent: 'SHOW_MISSING_POSTER',
-        confidence: 0.98,
-        action: ACTION_TYPES.SHOW_MISSING_POSTER,
-        target_screen: current_screen,
-        route: '/easter-egg/missing-karthi',
-        entities: { target: 'Karthi' },
-        requires_confirmation: false,
-        response: effectiveLang === 'ta'
-          ? 'இதோ, ஹேக்கத்தானில் காணாமல் போன கார்த்தியைத் தேடும் போஸ்டர்!'
-          : 'Displaying the Hackathon Missing Poster for Karthi!'
-      };
-    }
 
     // ============================================================
     // STEP 3: CONTEXT-AWARE STATE MACHINE (Section 9 & 10)

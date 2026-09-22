@@ -7,7 +7,7 @@ import { ActionExecutor } from '../../services/ActionExecutor';
 import { Play, RotateCcw, Sparkles, CheckCircle2, ChevronRight, Zap } from 'lucide-react';
 
 export const HackathonDemoRunner = ({ onExecuteAction }) => {
-  const { setCurrentPage, setWorkingDraft, setIsMissingPosterOpen } = useAppData();
+  const { setCurrentPage, setWorkingDraft } = useAppData();
   const { currentLang, changeLanguage } = useLanguage();
   const { speak, simulateVoicePrompt } = useVoice();
 
@@ -173,27 +173,6 @@ export const HackathonDemoRunner = ({ onExecuteAction }) => {
           <span>{isRunningAuto ? 'Running 8 Steps...' : '1-Click Auto Run (Section 25)'}</span>
         </button>
 
-        {/* Missing Karthi Poster Button */}
-        <button
-          onClick={() => setIsMissingPosterOpen(true)}
-          style={{
-            background: 'linear-gradient(135deg, #DC2626, #991B1B)',
-            color: 'white',
-            border: 'none',
-            borderRadius: 8,
-            padding: '4px 10px',
-            fontSize: '0.75rem',
-            fontWeight: 800,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4
-          }}
-          title="Open Missing Karthi Poster"
-        >
-          <span>🚨</span>
-          <span>Missing: Karthi</span>
-        </button>
 
         <button
           onClick={handleReset}

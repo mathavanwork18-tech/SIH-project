@@ -5,7 +5,7 @@ import { Globe, User, Bell } from 'lucide-react';
 
 export const Navbar = () => {
   const { currentLang, languages, setIsLanguageModalOpen } = useLanguage();
-  const { currentRole, setCurrentRole, setCurrentPage, enquiries, setIsMissingPosterOpen } = useAppData();
+  const { currentRole, setCurrentRole, setCurrentPage, enquiries } = useAppData();
 
   const currentLangObj = languages.find(l => l.code === currentLang) || languages[0];
   const unreadCount = enquiries.filter(e => e.unread).length;
@@ -87,28 +87,6 @@ export const Navbar = () => {
           </button>
         </div>
 
-        {/* Missing Karthi Poster Button */}
-        <button
-          onClick={() => setIsMissingPosterOpen(true)}
-          style={{
-            background: 'linear-gradient(135deg, #DC2626, #991B1B)',
-            border: 'none',
-            padding: '4px 8px',
-            borderRadius: 999,
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-            fontWeight: 800,
-            fontSize: '0.7rem',
-            color: '#FFFFFF',
-            boxShadow: '0 2px 6px rgba(220, 38, 38, 0.3)'
-          }}
-          title="Karthi Missing Poster"
-        >
-          <span>🚨</span>
-          <span>Missing: Karthi</span>
-        </button>
 
         {/* Language Button */}
         <button
