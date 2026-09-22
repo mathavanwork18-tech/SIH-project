@@ -1,0 +1,915 @@
+1. என்ன problem-ஐ solve பண்ணுறோம்?
+
+பல traditional/rural artisans-க்கு product create பண்ணும் skill இருக்கும். ஆனால் digital marketplace-ல் product sell பண்ணும்போது பல barriers இருக்கும்:
+
+Product photo professionally எடுக்க தெரியாமல் இருக்கலாம்.
+Background remove/edit செய்ய தெரியாமல் இருக்கலாம்.
+Product title எழுதுவது difficult.
+Professional description எழுத முடியாமல் இருக்கலாம்.
+Correct category select செய்வது difficult.
+Keywords/tags தெரியாமல் இருக்கலாம்.
+English அல்லது மற்ற languages-ல் catalogue உருவாக்குவது difficult.
+Marketplace-ல் product upload செய்ய பல steps தேவைப்படும்.
+Buyer-களை கண்டுபிடிப்பது difficult.
+Digital literacy குறைவாக இருக்கலாம்.
+Typing-based interfaces அனைவருக்கும் comfortable ஆக இருக்காது.
+
+உன் project இதை ஒரு single intelligent workflow-ஆ solve பண்ணும்.
+
+2. Main USP
+
+உன் application-ன் மிக முக்கியமான concept:
+
+VOICE IS THE PRIMARY INTERACTION METHOD
+
+User app-ஐ பயன்படுத்தும்போது ஒரு persistent AI Voice Button இருக்கும்.
+
+User type பண்ண வேண்டிய அவசியம் குறைக்கப்படும்.
+
+உதாரணம்:
+
+“நான் ஒரு product post போடணும்.”
+
+AI:
+
+“சரி. Product upload page-க்கு உங்களை அழைத்துச் செல்கிறேன்.”
+
+அது நேரடியாக correct page-க்கு navigate செய்யும்.
+
+அதனால் user-க்கு:
+
+Menu → Products → Add Product → Camera
+
+என்று தேட வேண்டிய அவசியம் இல்லை.
+
+3. Complete System Architecture
+                    ARTISAN
+                       │
+                       ▼
+              ┌─────────────────┐
+              │ LANGUAGE SELECT │
+              └────────┬────────┘
+                       │
+                       ▼
+            ┌──────────────────────┐
+            │ AI VOICE ASSISTANT   │
+            │ AI MODEL 1           │
+            └──────────┬───────────┘
+                       │
+              Understand Intent
+                       │
+                       ▼
+              App Navigation
+                       │
+                       ▼
+              CREATE PRODUCT
+                       │
+                       ▼
+                 PHONE CAMERA
+                       │
+                       ▼
+            ┌──────────────────────┐
+            │ IMAGE AI             │
+            │ AI MODEL 2            │
+            └──────────┬───────────┘
+                       │
+             Image Quality Check
+                       │
+             Enhancement
+                       │
+             Background Removal
+                       │
+             Object Detection
+                       │
+             Product Validation
+                       │
+                       ▼
+              CLEAN PRODUCT IMAGE
+                       │
+                       ▼
+            ┌──────────────────────┐
+            │ SMART CATALOG AI     │
+            │ AI MODEL 3           │
+            └──────────┬───────────┘
+                       │
+             Product Understanding
+                       │
+             Category
+             Material
+             Description
+             Keywords
+             Tags
+             Translation
+                       │
+                       ▼
+              AI CATALOGUE PREVIEW
+                       │
+                       ▼
+                 HUMAN REVIEW
+                       │
+                       ▼
+                 APPROVE/PUBLISH
+                       │
+                       ▼
+               MASTER CATALOGUE
+                       │
+                       ▼
+            ┌──────────────────────┐
+            │ MARKET LINKAGE AI    │
+            │ AI MODEL 4           │
+            └──────────┬───────────┘
+                       │
+                       ▼
+              BUYER MATCHING
+                       │
+                       ▼
+              BUYER DISCOVERY
+                       │
+                       ▼
+                  ENQUIRY
+                       │
+                       ▼
+                  ARTISAN
+4. AI Model 1 — Voice & Navigation AI
+
+இது application-ன் main AI assistant.
+
+இதன் வேலை:
+
+User speech → Intent → Action
+
+Example:
+
+“Product post பண்ணணும்.”
+
+→ Create Product
+
+“என்னுடைய products காட்டு.”
+
+→ My Products
+
+“எனக்கு வந்த enquiries காட்டு.”
+
+→ Enquiries
+
+“என் profile update பண்ணணும்.”
+
+→ Profile
+
+“என் product-க்கு description change பண்ணு.”
+
+→ Product Editing
+
+“Buyers தேடணும்.”
+
+→ Buyer Discovery
+
+இதனால் voice assistant ஒரு simple chatbot இல்லாமல் application controller மாதிரி இருக்கும்.
+
+5. Language System
+
+App open ஆனவுடன் login screen-க்கு முன்னாடியே:
+
+“Choose your language”
+
+என்று language selection வரும்.
+
+Example:
+
+தமிழ்
+English
+हिन्दी
+తెలుగు
+മലയാളം
+ಕನ್ನಡ
+বাংলা
+मराठी
+
+User Tamil select செய்தால்:
+
+UI Tamil
+AI voice Tamil
+registration Tamil
+error messages Tamil
+onboarding Tamil
+product assistance Tamil
+
+எல்லாம் Tamil-ல் இருக்கும்.
+
+User later language change செய்யவும் முடியும்.
+
+6. Voice Registration
+
+இது project-ன் strongest features-ல ஒன்று.
+
+User registration form-ஐ manually fill செய்வதற்கு பதிலாக AI கேள்வி கேட்கும்.
+
+AI:
+
+“உங்கள் பெயரை சொல்லுங்கள்.”
+
+User:
+
+“என் பெயர் ரமேஷ்.”
+
+System:
+
+Name = Ramesh
+
+AI:
+
+“நீங்கள் எந்த ஊரில் இருக்கிறீர்கள்?”
+
+User:
+
+“மதுரையில் இருக்கேன்.”
+
+System:
+
+Location = Madurai
+
+AI:
+
+“என்ன craft செய்கிறீர்கள்?”
+
+User:
+
+“நான் மரத்தில் handmade பொருட்கள் செய்றேன்.”
+
+System:
+
+Craft = Wood Craft
+
+இப்படி natural conversation மூலம் registration complete ஆகும்.
+
+7. Intelligent Field Extraction
+
+User ஒரே sentence-ல் பல information சொல்லலாம்.
+
+Example:
+
+“என் பெயர் குமார், நான் சேலத்தில் இருக்கேன், 12 வருடமா bamboo products செய்றேன்.”
+
+AI:
+
+Name       → Kumar
+Location   → Salem
+Experience → 12 years
+Craft      → Bamboo Products
+
+இதுதான் Natural Language → Structured Data Extraction.
+
+8. Voice Correction
+
+User:
+
+“என் experience 12 years இல்லை, 15 years.”
+
+AI:
+
+Experience = 15 years
+
+மற்ற fields untouched.
+
+அதேபோல்:
+
+“என் பெயரை change பண்ணு.”
+
+→ Name editing.
+
+9. Registration Confirmation
+
+AI எல்லா details-ஐ summary-ஆ காட்டும்.
+
+User:
+
+Name: Kumar
+Location: Salem
+Craft: Bamboo Craft
+Experience: 15 Years
+
+AI:
+
+“இந்த தகவல்கள் சரியா?”
+
+User:
+
+“ஆம், confirm.”
+
+அதற்குப் பிறகு மட்டுமே account create ஆகும்.
+
+10. Product Posting
+
+User dashboard-ல் permanent voice button இருக்கும்.
+
+User:
+
+“நான் ஒரு product post போடணும்.”
+
+AI:
+
+Create Product page open செய்யும்.
+
+AI:
+
+“உங்கள் product-ன் photo எடுக்கலாம்.”
+
+Camera permission இல்லையென்றால்:
+
+“Camera access allow செய்யவும்.”
+
+Permission கிடைத்ததும் phone camera open ஆகும்.
+
+11. Camera Module
+
+Camera screen simple-ஆ இருக்க வேண்டும்.
+
+Show:
+
+Capture
+Retake
+Gallery
+Flash
+Camera guidance
+Product framing guide
+
+AI voice:
+
+“Product முழுவதும் frame-க்குள் வருமாறு வைத்துக் கொள்ளுங்கள்.”
+
+12. AI Model 2 — Image Intelligence
+
+Photo capture ஆனதும் Second AI pipeline start ஆகும்.
+
+Step 1 — Image Quality
+
+AI check:
+
+Blur
+Low resolution
+Darkness
+Overexposure
+Product visibility
+Bad framing
+
+Quality poor என்றால்:
+
+“Photo கொஞ்சம் blur-ஆ இருக்கிறது. மீண்டும் photo எடுக்கவும்.”
+
+13. Image Enhancement
+
+Good photo கிடைத்தால் AI:
+
+Brightness correction
+Contrast correction
+Sharpness improvement
+Noise reduction
+Crop
+Resize
+Orientation correction
+
+செய்யும்.
+
+14. Background Removal
+
+AI product-ஐ background-லிருந்து isolate செய்யும்.
+
+Example:
+
+Original Photo
+       ↓
+Product Segmentation
+       ↓
+Background Detection
+       ↓
+Background Removal
+       ↓
+Clean Product Image
+
+Original image preserve செய்ய வேண்டும்.
+
+Processed image தனியாக save செய்ய வேண்டும்.
+
+15. Product Detection
+
+AI:
+
+“இந்த image-ல் என்ன இருக்கிறது?”
+
+என்பதை analyse செய்யும்.
+
+Example:
+
+Detected Object: Handmade Wooden Bowl
+
+Multiple products இருந்தால் warning:
+
+“இந்த photo-ல் ஒன்றுக்கு மேற்பட்ட products கண்டறியப்பட்டுள்ளன. தனித்தனி photos upload செய்ய பரிந்துரைக்கப்படுகிறது.”
+
+16. AI Model 3 — Smart Cataloguing
+
+இது PPT-ன் central AI feature.
+
+Clean image AI catalogue engine-க்கு அனுப்பப்படும்.
+
+AI generate செய்யும்:
+
+Product Name
+Category
+Sub-category
+Craft Type
+Material
+Color
+Pattern
+Description
+Short Description
+Keywords
+Tags
+Suggested Buyer Type
+Suggested Market
+Languages
+17. Example
+
+Image:
+
+Handmade Bamboo Basket
+
+AI:
+
+Product Name:
+Traditional Handmade Bamboo Basket
+
+Category:
+Home & Lifestyle
+
+Sub-category:
+Storage & Décor
+
+Material:
+Bamboo
+
+Craft:
+Bamboo Craft
+
+Color:
+Natural Brown
+
+Keywords:
+Handmade
+Bamboo
+Traditional
+Eco-friendly
+Storage Basket
+
+Description:
+A traditionally handcrafted bamboo basket...
+18. AI Confidence
+
+ஒவ்வொரு extracted field-க்கும் confidence காட்டலாம்.
+
+Example:
+
+Material: Bamboo       96%
+Category: Home Décor  92%
+Craft: Bamboo Craft   95%
+Color: Brown          88%
+
+Confidence low என்றால் human confirmation கேட்க வேண்டும்.
+
+19. Human-in-the-loop
+
+AI தவறு செய்யக்கூடும்.
+
+அதனால்:
+
+AI Generate → Human Review → Approve
+
+mandatory.
+
+User:
+
+“Material bamboo இல்லை, cane.”
+
+AI:
+
+Material = Cane
+
+அதற்குப் பிறகு publish.
+
+இது உன் PPT-ல் குறிப்பிடப்பட்ட human-review mitigation-க்கும் consistent.
+
+20. Voice-Based Catalogue Editing
+
+User typing தேவையில்லை.
+
+Examples:
+
+“Description short பண்ணு.”
+
+“Category change பண்ணு.”
+
+“இந்த product-க்கு traditional keyword add பண்ணு.”
+
+“Hindi-ல translate பண்ணு.”
+
+AI requested field மட்டும் modify செய்யும்.
+
+21. Translation
+
+Artisan Tamil-ல் description சொல்லலாம்.
+
+System original-ஐ preserve பண்ணி translations உருவாக்கும்.
+
+Original:
+Tamil
+
+Translations:
+English
+Hindi
+Telugu
+Malayalam
+Kannada
+...
+
+Original content overwrite செய்யக்கூடாது.
+
+22. Master Catalogue
+
+Approved products அனைத்தும் Master Catalogue-ல் இருக்கும்.
+
+Artisan:
+
+View
+Search
+Edit
+Duplicate
+Archive
+Delete
+Publish
+Unpublish
+Update price
+Update availability
+
+செய்யலாம்.
+
+23. AI Market Linkage
+
+இதுதான் next major intelligence layer.
+
+Product data-ஐ வைத்து system relevant buyers-ஐ identify செய்யும்.
+
+Factors:
+
+Product category
+Craft
+Material
+Keywords
+Location
+Price
+Buyer requirement
+Market demand
+Historical interactions
+24. Match Score
+
+Example:
+
+Buyer Match: 94%
+
+Reasons:
+✓ Bamboo products required
+✓ Handmade category matches
+✓ Price range matches
+✓ Traditional craft requirement matches
+
+இதனால் matching explainable ஆக இருக்கும்.
+
+25. Buyer Discovery
+
+Buyer:
+
+Search
+Filter
+Category browse
+Artisan search
+Product search
+Save products
+View catalogue
+Send enquiry
+
+செய்யலாம்.
+
+26. Enquiry System
+
+Workflow:
+
+Buyer
+ ↓
+Product
+ ↓
+Send Enquiry
+ ↓
+Artisan Notification
+ ↓
+Artisan Response
+ ↓
+Conversation
+ ↓
+Accepted / Closed
+27. AI Assistant Throughout App
+
+AI button dashboard-ல் மட்டும் இருக்கக்கூடாது.
+
+ஒவ்வொரு major screen-லும் இருக்க வேண்டும்.
+
+User:
+
+“இந்த page என்ன?”
+
+AI அந்த current screen-ஐ context-ஆ வைத்து explain செய்யும்.
+
+User:
+
+“இப்போ நான் என்ன செய்யணும்?”
+
+AI next action சொல்லும்.
+
+இதுதான் Context-Aware AI Assistant.
+
+28. Artisan Dashboard
+
+Dashboard மிகவும் simple-ஆ இருக்க வேண்டும்.
+
+Show:
+
+Welcome, Kumar
+
+Products
+12
+
+Published
+9
+
+Drafts
+3
+
+Buyer Views
+1,240
+
+Enquiries
+18
+
+New Matches
+7
+
+மேலும்:
+
+“What would you like to do?”
+
+என்று பெரிய voice button.
+
+29. Accessibility
+
+Target users-ஐ கருத்தில் கொண்டு:
+
+Large buttons
+Simple navigation
+Large fonts
+Voice-first
+Minimal typing
+Clear icons
+Audio guidance
+Local language
+Error explanation
+Easy back navigation
+
+இவை mandatory.
+
+30. Offline Support
+
+Internet weak இருந்தாலும்:
+
+Registration draft
+Product draft
+Image draft
+Catalogue draft
+
+locally save செய்ய வேண்டும்.
+
+Network வந்ததும்:
+
+Sync automatically
+
+31. Security
+
+Implement:
+
+JWT
+Password hashing
+Role-based access
+Input validation
+Secure uploads
+File validation
+API protection
+Admin protection
+Environment variables
+No API keys in Flutter
+Audit logs
+32. Roles
+
+System-ல் minimum 3 roles:
+
+Artisan
+
+Create/manage products and receive enquiries.
+
+Buyer
+
+Discover products and contact artisans.
+
+Admin
+
+Manage platform, users, categories, reports and analytics.
+
+33. Database
+
+MongoDB collections:
+
+users
+artisans
+buyers
+products
+catalogues
+enquiries
+conversations
+ai_sessions
+ai_extractions
+market_matches
+notifications
+languages
+categories
+analytics
+activity_logs
+
+AI output-ஐ database-ல் raw-ஆ மட்டும் store செய்யாமல் structured fields-ஆவும் store செய்ய வேண்டும்.
+
+34. UI/UX Concept
+
+UI modern startup-level ஆக இருக்க வேண்டும்.
+
+ஆனால் முக்கியமான point:
+
+Beautiful UI மட்டும் போதாது. Low-digital-literacy user-க்கும் easy ஆக இருக்க வேண்டும்.
+
+Home screen:
+
+┌─────────────────────────────┐
+│  ArtisanBridge AI       🔔  │
+│                             │
+│  Vanakkam, Kumar            │
+│                             │
+│  What would you like to do? │
+│                             │
+│       🎤                    │
+│   TALK TO AI                │
+│                             │
+│  ┌────────┐  ┌────────┐     │
+│  │Products│  │Enquiry │     │
+│  └────────┘  └────────┘     │
+│                             │
+│  Recent Products            │
+│  [ Product ] [ Product ]    │
+└─────────────────────────────┘
+
+Voice button தான் visually dominant action.
+
+35. முக்கியமான புதிய features நான் recommend பண்ணுவது
+
+உன் current features-க்கு மேலாக இவற்றையும் சேர்ப்பேன்:
+
+AI Product Quality Score
+Product listing quality-ஐ score செய்யும்.
+
+AI Listing Improvement
+“Your product needs better description/keywords/photo” என்று suggestions.
+
+AI Duplicate Detection
+Same product மீண்டும் upload செய்தால் identify செய்யும்.
+
+Multi-photo Product Story
+ஒரே product-க்கு front/side/detail images.
+
+AI Smart Pricing Assistant
+Suggested price range; final price artisan தான் decide செய்வார்.
+
+Product Availability
+In stock / Out of stock / Made-to-order.
+
+Saved Buyers
+Artisan relevant buyers-ஐ save செய்யலாம்.
+
+Buyer Requirement Posting
+Buyer தங்களுக்கு தேவையான product requirement post செய்யலாம்.
+
+Reverse Matching
+Buyer requirement → matching artisans.
+
+Artisan Verification
+Optional profile verification workflow.
+
+Report/Moderation System
+Wrong/inappropriate listing report செய்யலாம்.
+
+AI Activity Log
+AI என்ன generate/change செய்தது என்பதற்கான trace.
+
+Consent-Based Voice Processing
+Voice processing தொடங்கும் முன் privacy/consent control.
+
+Delete My Data
+User தனது account/data deletion request செய்ய முடியும்.
+
+36. Final End-to-End User Journey
+
+உன் project demo-வில் இதை காட்டினால் மிகவும் strong ஆக இருக்கும்:
+
+OPEN APP
+   ↓
+SELECT LANGUAGE
+   ↓
+AI WELCOME
+   ↓
+VOICE REGISTRATION
+   ↓
+AI UNDERSTANDS SPEECH
+   ↓
+AUTO FORM FILL
+   ↓
+VOICE CONFIRMATION
+   ↓
+ACCOUNT CREATED
+   ↓
+AI ONBOARDING
+   ↓
+ARTISAN DASHBOARD
+   ↓
+PRESS VOICE BUTTON
+   ↓
+“I WANT TO POST A PRODUCT”
+   ↓
+AI UNDERSTANDS INTENT
+   ↓
+CREATE PRODUCT PAGE
+   ↓
+PHONE CAMERA
+   ↓
+CAPTURE PRODUCT PHOTO
+   ↓
+AI MODEL 2
+   ↓
+QUALITY CHECK
+   ↓
+ENHANCE IMAGE
+   ↓
+REMOVE BACKGROUND
+   ↓
+DETECT PRODUCT
+   ↓
+VALIDATE IMAGE
+   ↓
+AI MODEL 3
+   ↓
+SMART CATALOGUE
+   ↓
+NAME
+CATEGORY
+MATERIAL
+DESCRIPTION
+KEYWORDS
+TAGS
+TRANSLATION
+   ↓
+CONFIDENCE SCORES
+   ↓
+HUMAN REVIEW
+   ↓
+VOICE CORRECTION
+   ↓
+APPROVE
+   ↓
+MASTER CATALOGUE
+   ↓
+AI MARKET LINKAGE
+   ↓
+BUYER MATCH
+   ↓
+BUYER DISCOVERY
+   ↓
+ENQUIRY
+   ↓
+ARTISAN NOTIFICATION
+   ↓
+RESPONSE
+   ↓
+ANALYTICS
+
+இதுதான் உன் complete project concept. இதிலிருந்து அடுத்த கட்டத்தில் Antigravity-க்கு கொடுக்க வேண்டிய prompt-ல் இந்த architecture-ஐ வைத்து ஒவ்வொரு screen, every button, every API, MongoDB schema, AI input/output, camera pipeline, voice pipeline, error handling, authentication, admin, buyer, artisan, UI/UX design system அனைத்தையும் exact specification-ஆ எழுத வேண்டும். அதுதான் project-ஐ “demo UI” இல்லாமல் உண்மையான working Final Year Project ஆக உருவாக்கும்.

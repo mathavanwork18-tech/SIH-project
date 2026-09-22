@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Voice Nav Demo</title>
+<style>
+  :root {
+    --bg: #12130f;
+    --panel: #1c1e18;
+    --accent: #97c459;
+    --accent-dim: #3b6d11;
+    --text: #e8e6dc;
+    --text-dim: #888780;
+    --border: #33352c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+  p.sub { color: var(--text-dim); font-size: 14px; margin-top: 0; margin-bottom: 32px; }
+
+  .stage {
+    width: 100%;
+    max-width: 420px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .stage.active-camera { border-color: var(--accent); }
+  .stage h2 { font-size: 18px; font-weight: 500; margin: 0 0 8px; }
+  .stage p { color: var(--text-dim); font-size: 14px; margin: 0; }
+
+  .camera-frame {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+
+  .controls {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  button.mic-btn {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent-dim);
+    color: var(--text);
+    font-size: 26px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+  button.mic-btn:active { transform: scale(0.96); }
+  button.mic-btn.recording { background: #791f1f; }
+
+  .status { font-size: 13px; color: var(--text-dim); min-height: 18px; }
+
+  .transcript-box {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  .transcript-box strong { color: var(--text); font-weight: 500; }
+
+  .text-fallback {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .text-fallback input {
+    flex: 1;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 14px;
+  }
+  .text-fallback button {
+    background: var(--accent-dim);
+    color: var(--text);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<h1>Voice navigation demo</h1>
+<p class="sub">Sollunga — "post pageku poo" or "camera open pannunga"</p>
+
+<div class="stage" id="stage">
+  <h2 id="stageTitle">Home page</h2>
+  <p id="stageDesc">Waiting for a voice command</p>
+</div>
+
+<div class="controls">
+  <button class="mic-btn" id="micBtn">🎤</button>
+  <div class="status" id="status"></div>
+</div>
+
+<div class="text-fallback">
+  <input type="text" id="textInput" placeholder="Or type a command (any language)..." />
+  <button id="textSendBtn">Send</button>
+</div>
+
+<div class="transcript-box" id="transcriptBox" style="display:none;">
+  <div><strong>Heard:</strong> <span id="transcriptText"></span></div>
+  <div><strong>Action:</strong> <span id="actionText"></span></div>
+</div>
+
+<script>
+const BACKEND_URL = window.location.origin;
+
+const stage = document.getElementById("stage");
+const micBtn = document.getElementById("micBtn");
+const statusEl = document.getElementById("status");
+const transcriptBox = document.getElementById("transcriptBox");
+const transcriptText = document.getElementById("transcriptText");
+const actionText = document.getElementById("actionText");
+const textInput = document.getElementById("textInput");
+const textSendBtn = document.getElementById("textSendBtn");
+
+let activeCameraStream = null;
+let activeCameraFacing = "environment";
+
+// Mock page contents — swap these for your real app's router/navigation calls.
+const PAGES = {
+  home: { title: "Home page", desc: "Your feed appears here" },
+  post: { title: "Post page", desc: "Create a new post" },
+  profile: { title: "Profile page", desc: "Your profile details" },
+  messages: { title: "Messages", desc: "Your conversations" },
+  settings: { title: "Settings", desc: "App preferences" },
+};
+
+function stopCamera() {
+  if (activeCameraStream) {
+    activeCameraStream.getTracks().forEach((t) => t.stop());
+    activeCameraStream = null;
+  }
+}
+
+function renderPage(pageId) {
+  stopCamera();
+  stage.classList.remove("active-camera");
+  const page = PAGES[pageId] || PAGES.home;
+  stage.innerHTML = `
+    <h2 id="stageTitle">${page.title}</h2>
+    <p id="stageDesc">${page.desc}</p>
+  `;
+}
+
+// Real Camera Stream Functionality
+async function renderCamera() {
+  stopCamera();
+  stage.classList.add("active-camera");
+  stage.innerHTML = `
+    <div style="width: 100%; position: relative; margin-bottom: 12px;">
+      <video id="cameraVideo" autoplay playsinline muted style="width: 100%; height: 230px; object-fit: cover; border-radius: 12px; background: #000; border: 2px solid var(--accent);"></video>
+      <canvas id="photoCanvas" style="display:none;"></canvas>
+    </div>
+    <h2 style="margin: 0 0 6px;">Live Camera</h2>
+    <p style="margin: 0 0 12px; color: var(--text-dim); font-size: 13px;" id="cameraStatus">Starting live camera stream...</p>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;">
+      <button id="capturePhotoBtn" style="background: var(--accent); color: #12130f; font-weight: 600; border: none; border-radius: 8px; padding: 8px 16px; cursor: pointer;">📸 Take Photo</button>
+      <button id="flipCameraBtn" style="background: var(--panel); border: 1px solid var(--border); color: var(--text); border-radius: 8px; padding: 8px 12px; cursor: pointer;">🔄 Flip</button>
+      <button id="closeCameraBtn" style="background: #33352c; color: var(--text); border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer;">Close</button>
+    </div>
+    <div id="capturedPreviewContainer" style="margin-top: 14px; display: none; width: 100%; text-align: center;">
+      <p style="margin: 4px 0; font-size: 12px; color: var(--accent);">Captured Photo:</p>
+      <img id="capturedPhotoImg" style="width: 130px; height: 95px; object-fit: cover; border-radius: 8px; border: 1px solid var(--accent);" />
+    </div>
+  `;
+
+  const videoEl = document.getElementById("cameraVideo");
+  const cameraStatus = document.getElementById("cameraStatus");
+
+  try {
+    let stream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: activeCameraFacing }, width: { ideal: 1280 }, height: { ideal: 720 } }
+      });
+    } catch (e) {
+      // Fallback for devices without facingMode or strict resolution
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    }
+
+    activeCameraStream = stream;
+    if (videoEl) {
+      videoEl.srcObject = stream;
+      await videoEl.play().catch((e) => console.log("Play error:", e));
+      if (cameraStatus) cameraStatus.textContent = "Camera active. Ready to capture!";
+    }
+
+    // Attach Capture listener
+    document.getElementById("capturePhotoBtn")?.addEventListener("click", () => {
+      const canvas = document.getElementById("photoCanvas");
+      const img = document.getElementById("capturedPhotoImg");
+      const preview = document.getElementById("capturedPreviewContainer");
+      if (videoEl && canvas && img) {
+        canvas.width = videoEl.videoWidth || 640;
+        canvas.height = videoEl.videoHeight || 480;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
+        img.src = canvas.toDataURL("image/jpeg");
+        if (preview) preview.style.display = "block";
+        speak("Photo captured successfully", "en");
+      }
+    });
+
+    // Flip Camera listener
+    document.getElementById("flipCameraBtn")?.addEventListener("click", () => {
+      activeCameraFacing = activeCameraFacing === "environment" ? "user" : "environment";
+      renderCamera();
+    });
+
+    // Close Camera listener
+    document.getElementById("closeCameraBtn")?.addEventListener("click", () => {
+      renderPage("home");
+    });
+  } catch (err) {
+    console.error("Camera access failed:", err);
+    if (cameraStatus) {
+      cameraStatus.innerHTML = `<span style="color: #ff6b6b;">Camera error: ${err.message || "Permission denied"}</span>`;
+    }
+    document.getElementById("closeCameraBtn")?.addEventListener("click", () => {
+      renderPage("home");
+    });
+  }
+}
+
+// Spoken TTS feedback
+function speak(text, lang) {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  const langMap = { ta: "ta-IN", en: "en-IN", hi: "hi-IN" };
+  utter.lang = langMap[lang] || "en-IN";
+  utter.rate = 1.0;
+  utter.pitch = 1.0;
+
+  const voices = window.speechSynthesis.getVoices();
+  const matched = voices.find((v) => v.lang.startsWith(langMap[lang] || "en") || v.lang.includes(langMap[lang] || "en"));
+  if (matched) utter.voice = matched;
+
+  window.speechSynthesis.speak(utter);
+}
+
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+  };
+}
+
+// Executes the action returned by backend against UI
+function handleAction(result) {
+  transcriptBox.style.display = "block";
+  transcriptText.textContent = result.transcript || "";
+  actionText.textContent = `${result.intent} -> ${result.target || "none"}`;
+
+  if (result.intent === "navigate" && PAGES[result.target]) {
+    renderPage(result.target);
+  } else if (result.intent === "open_feature" && result.target === "camera") {
+    renderCamera();
+  } else if (result.intent === "open_feature") {
+    stopCamera();
+    stage.classList.remove("active-camera");
+    stage.innerHTML = `
+      <h2>Feature</h2>
+      <p>Opening: ${result.target}</p>
+    `;
+  }
+
+  if (result.spoken_reply) {
+    speak(result.spoken_reply, result.reply_language);
+  }
+}
+
+async function sendAudio(blob) {
+  statusEl.textContent = "Processing audio...";
+  const form = new FormData();
+  form.append("audio", blob, "command.webm");
+
+  try {
+    const res = await fetch(`${BACKEND_URL}/voice-command`, { method: "POST", body: form });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    handleAction(data);
+    statusEl.textContent = "";
+  } catch (err) {
+    statusEl.textContent = "Audio error: " + err.message;
+  }
+}
+
+async function sendText(text) {
+  statusEl.textContent = "Processing command...";
+  try {
+    const res = await fetch(`${BACKEND_URL}/voice-command-text`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    handleAction(data);
+    statusEl.textContent = "";
+  } catch (err) {
+    statusEl.textContent = "Error: " + err.message;
+  }
+}
+
+// --- Voice Recognition Setup (Dual-mode: Web Speech API with MediaRecorder fallback) ---
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let isWebSpeechListening = false;
+
+// MediaRecorder fallback state
+let mediaRecorder = null;
+let chunks = [];
+let recording = false;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = "ta-IN"; // Indian Tamil default (recognizes Tanglish & English keywords)
+
+  recognition.onstart = () => {
+    isWebSpeechListening = true;
+    micBtn.classList.add("recording");
+    statusEl.textContent = "Listening (speak in Tamil, English, or Tanglish)...";
+  };
+
+  recognition.onresult = (event) => {
+    let interim = "";
+    let final = "";
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      if (event.results[i].isFinal) {
+        final += event.results[i][0].transcript;
+      } else {
+        interim += event.results[i][0].transcript;
+      }
+    }
+    if (interim) {
+      statusEl.textContent = `Heard: "${interim}"...`;
+    }
+    if (final) {
+      statusEl.textContent = `Recognized: "${final}"`;
+      sendText(final);
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.warn("Web Speech API error:", event.error);
+    isWebSpeechListening = false;
+    micBtn.classList.remove("recording");
+    statusEl.textContent = event.error === "not-allowed" ? "Mic permission denied" : `Voice notice: ${event.error}`;
+  };
+
+  recognition.onend = () => {
+    isWebSpeechListening = false;
+    micBtn.classList.remove("recording");
+  };
+}
+
+// Toggle Mic Click Handler
+micBtn.addEventListener("click", async () => {
+  if (recognition) {
+    if (!isWebSpeechListening) {
+      try {
+        recognition.start();
+      } catch (e) {
+        recognition.stop();
+      }
+    } else {
+      recognition.stop();
+    }
+    return;
+  }
+
+  // Fallback to MediaRecorder audio upload if browser lacks Web Speech API
+  if (!recording) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      chunks = [];
+      mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: "audio/webm" });
+        sendAudio(blob);
+        stream.getTracks().forEach((t) => t.stop());
+      };
+      mediaRecorder.start();
+      recording = true;
+      micBtn.classList.add("recording");
+      statusEl.textContent = "Recording audio...";
+    } catch (err) {
+      statusEl.textContent = "Mic permission denied";
+    }
+  } else {
+    mediaRecorder.stop();
+    recording = false;
+    micBtn.classList.remove("recording");
+  }
+});
+
+textSendBtn.addEventListener("click", () => {
+  const val = textInput.value.trim();
+  if (val) {
+    sendText(val);
+    textInput.value = "";
+  }
+});
+textInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") textSendBtn.click();
+});
+</script>
+</body>
+</html>

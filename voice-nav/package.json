@@ -1,0 +1,17 @@
+{
+  "name": "voice-nav-demo",
+  "version": "1.0.0",
+  "description": "Multilingual voice command backend: speech -> intent -> app navigation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

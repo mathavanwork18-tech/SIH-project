@@ -1,0 +1,15 @@
+{
+  "pages": [
+    { "id": "home", "labels": ["home", "main", "veedu page", "home page"] },
+    { "id": "post", "labels": ["post", "post page", "new post", "postu"] },
+    { "id": "profile", "labels": ["profile", "profile page", "en profile"] },
+    { "id": "messages", "labels": ["messages", "chat", "message page"] },
+    { "id": "settings", "labels": ["settings", "setting page", "amaipu"] }
+  ],
+  "features": [
+    { "id": "camera", "labels": ["camera", "camera open", "photo edukka"] },
+    { "id": "gallery", "labels": ["gallery", "photos", "album"] },
+    { "id": "mic", "labels": ["mic", "voice recording"] },
+    { "id": "search", "labels": ["search", "find", "thedu"] }
+  ]
+}
